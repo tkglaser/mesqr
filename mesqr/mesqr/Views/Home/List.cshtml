@@ -1,0 +1,82 @@
+﻿@model mesqr.Models.View.LandingListModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="page-header">
+    <h1>Welcome to mesqr</h1>
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    using (Html.BeginForm("Create", "Home", FormMethod.Post, new { @class = "well form-inline" }))
+    {
+    @Html.ValidationSummary(true)
+    @Html.ValidationMessage("Latitude")
+
+    @Html.Hidden("Latitude")
+    @Html.Hidden("Longitude")
+    @Html.Hidden("Accuracy")
+    @Html.Hidden("Altitude")
+    @Html.Hidden("AltitudeAccuracy")
+    
+    <div class="input-append">
+        @Html.TextBox("Message", "", new { @class = "span10" })<button type="submit" class="btn btn-primary"><i class="icon-bullhorn icon-white"></i>Shout</button>
+    </div>
+    @Html.ValidationMessage("Message")
+    }
+}
+
+<div class="well">
+    <h2>Nearby Tables</h2>
+    @foreach (var item in Model.NearbyTables)
+    {
+        <hr />
+        <blockquote>
+            <h3>@item.Item.Name - @item.FormattedDistMiles</h3>
+            <p>Messages on table: @item.Item.Msqs.Count()</p>
+            <small>@item.Item.Entered</small>
+        </blockquote>
+    }
+</div>
+
+<div class="well">
+    <h2>Nearby Messages</h2>
+    @foreach (var item in Model.NearbyMsqs)
+    {
+        <hr />
+        <blockquote>
+            <h3>@item.Item.User.UserName - @item.FormattedDistMiles</h3>
+            <p>@item.Item.Message</p>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <small>
+                    <a href="@Url.Action("Up", "Vote", new { id = item.Item.MsqId, r = Request.Url.AbsoluteUri })">+</a>
+                    <a href="@Url.Action("Down", "Vote", new { id = item.Item.MsqId, r = Request.Url.AbsoluteUri })">-</a>
+                </small>
+            }
+            <small>@item.Item.FriendlyPosition, Score: @item.Item.Score, @item.Item.Entered <a href="@Url.Action("Delete", new { id = item.Item.MsqId })"><i class="icon-trash"></i></a></small>
+        </blockquote>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        jQuery(window).ready(function () {
+            initiate_geolocation();
+        });
+
+        function initiate_geolocation() {
+            navigator.geolocation.getCurrentPosition(handle_geolocation_query);
+        }
+
+        function handle_geolocation_query(position) {
+            jQuery('#Latitude').val(position.coords.latitude);
+            jQuery('#Longitude').val(position.coords.longitude);
+            jQuery('#Accuracy').val(position.coords.accuracy);
+            jQuery('#Altitude').val(position.coords.altitude);
+            jQuery('#AltitudeAccuracy').val(position.coords.altitudeAccuracy);
+        }
+    </script>
+}

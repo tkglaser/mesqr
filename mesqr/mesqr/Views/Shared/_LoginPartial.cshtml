@@ -1,0 +1,12 @@
+﻿@if(Request.IsAuthenticated) {
+    <ul class="nav pull-right">
+        <li><a href="#"><strong>@User.Identity.Name</strong></a></li>
+        <li>@Html.ActionLink("Log Off", "LogOff", "Account", new { Area = "" }, null)</li>
+    </ul>
+}
+else
+{
+    <ul class="nav pull-right">
+        <li>@Html.ActionLink("Login", "Login", "Account", new { Area = "" }, null)</li>
+    </ul>
+}

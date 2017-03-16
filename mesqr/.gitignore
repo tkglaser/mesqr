@@ -1,0 +1,5 @@
+*.suo
+*.PublishSettings
+bin
+*.user
+obj

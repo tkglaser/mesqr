@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app>
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - mesqr</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/bootstrap.css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/Scripts/bootstrap.min.js")
+        <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+        @Scripts.Render("~/Scripts/geo-util.js")
+        @RenderSection("scripts", required: false)
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+        @Styles.Render("~/Content/bootstrap-responsive.min.css")
+        <script src="~/Scripts/angular.min.js"></script>
+        <script src="~/Scripts/i18n/angular-locale_en-gb.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    @Html.ActionLink("mesqr", "Index", "Home", null, new { @class = "brand" })
+                    <div class="nav-collapse">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+                @RenderBody()
+        </div>
+    </body>
+</html>
